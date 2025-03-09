@@ -1,0 +1,21 @@
+{
+  "name": "travel-app",
+  "version": "1.0.0",
+  "description": "Front End Nanodegree Content & Project Resources",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Walaessam27/Travel-App.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Walaessam27/Travel-App/issues"
+  },
+  "homepage": "https://github.com/Walaessam27/Travel-App#readme"
+}
