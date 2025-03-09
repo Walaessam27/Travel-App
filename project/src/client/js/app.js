@@ -1,78 +1,59 @@
-/* Global Variables */
-const apiKey = 'fe325f94c1c66c96481053100a7a3090&units=imperial';
-const serverUrl = 'http://localhost:3000'; 
+import axios from 'axios';
 
-// Create a new date instance dynamically with JS
-let d = new Date();
-let newDate = `${d.getMonth() + 1}.${d.getDate()}.${d.getFullYear()}`;
+const form = document.getElementById('location-form');
+const locationInput = document.getElementById('location');
+const dateInput = document.getElementById('trip-date');
+const tripInfoDiv = document.getElementById('trip-info');
 
-// action button
-document.getElementById('generate').addEventListener('click', async () => {
-    const zipcode = document.getElementById('zip').value;
-    const feelings = document.getElementById('feelings').value;
+form.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const location = locationInput.value;
+  const tripDate = dateInput.value;
 
-    // Validate zip code
-    if (!/^\d{5}(-\d{4})?$/.test(zipcode)) {
-        alert('Please enter a valid zip code.');
-        return;
-    }
+  // Call APIs to fetch weather and location info (Geonames, Weatherbit, Pixabay)
+  const locationData = await fetchLocationData(location);
+  const weatherData = await fetchWeatherData(locationData.lat, locationData.lng);
+  const imageData = await fetchImage(location);
 
-    try {
-        // Fetch weather data
-        const weatherData = await getWeatherData(zipcode);
-        if (!weatherData || !weatherData.main) {
-            alert('Failed to fetch weather data. Please check the ZIP code or try again later.');
-            return;
-        }
-
-        // Send data to the server
-        await postData(`${serverUrl}/add`, {
-            date: newDate,
-            temperature: weatherData.main.temp,
-            content: feelings,
-        });
-
-        await updateUI();
-    } catch (error) {
-        console.error('Error:', error);
-    }
+  // Display the data
+  displayTripInfo(locationData, weatherData, imageData, tripDate);
 });
 
-// Function to fetch weather data from OpenWeatherMap API
-async function getWeatherData(zipcode) {
-    const url = `https://api.openweathermap.org/data/2.5/weather?zip=${zipcode}&appid=${apiKey}`;
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`Weather data fetch failed: ${response.statusText}`);
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching weather API:', error);
-    }
+async function fetchLocationData(location) {
+  const res = await axios.get(`https://api.geonames.org/search?q=${location}&maxRows=1&username=YOUR_GEONAMES_API_KEY`);
+  const data = res.data.geonames[0];
+  return {
+    lat: data.lat,
+    lng: data.lng,
+    country: data.countryName,
+    name: data.name
+  };
 }
 
-// Function to POST data to the server
-async function postData(url = '', data = {}) {
-    try {
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        });
-        return await response.json();
-    } catch (error) {
-        console.error('Error:', error);
-    }
+async function fetchWeatherData(lat, lng) {
+  const res = await axios.get(`https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lng}&key=YOUR_WEATHERBIT_API_KEY`);
+  return res.data.data[0];
 }
 
-// Function to update the UI
-async function updateUI() {
-    try {
-        const response = await fetch(`${serverUrl}/all`);
-        const data = await response.json();
-        document.getElementById('date').textContent = `Date: ${data.date || 'N/A'}`;
-        document.getElementById('temp').textContent = `Temperature: ${data.temperature || 'N/A'}°F`;
-        document.getElementById('content').textContent = `Feeling: ${data.content || 'N/A'}`;
-    } catch (error) {
-        console.error('Error updating:', error);
-    }
+async function fetchImage(location) {
+  const res = await axios.get(`https://pixabay.com/api/?key=YOUR_PIXABAY_API_KEY&q=${location}&image_type=photo`);
+  return res.data.hits[0].webformatURL;
+}
+
+function displayTripInfo(locationData, weatherData, imageData, tripDate) {
+  tripInfoDiv.innerHTML = `
+    <h2>Trip to ${locationData.name}, ${locationData.country}</h2>
+    <img src="${imageData}" alt="${locationData.name}" width="300">
+    <p>Weather: ${weatherData.weather.description}</p>
+    <p>Temperature: ${weatherData.temp}°C</p>
+    <p>Countdown: ${getCountdown(tripDate)}</p>
+  `;
+}
+
+function getCountdown(tripDate) {
+  const today = new Date();
+  const tripDateObj = new Date(tripDate);
+  const timeDiff = tripDateObj - today;
+  const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
+  return daysRemaining > 0 ? `${daysRemaining} days left` : 'The trip is today!';
 }
