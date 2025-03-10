@@ -10,12 +10,21 @@
   <div id="app">
     <h1>Welcome to the Travel App</h1>
     <form id="location-form">
-      <input type="text" id="location" placeholder="Enter Location" />
-      <input type="date" id="trip-date" />
+      <input type="text" id="location" placeholder="Enter Location" required />
+      <input type="date" id="trip-date" required />
       <button type="submit">Get Trip Info</button>
     </form>
     <div id="trip-info"></div>
   </div>
-  <script src="21e81fc552e52e62200e.js"></script>
+  <script src="31d7643f3c17dd70ea7e.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').then(() => {
+        console.log('Service Worker Registered');
+      }).catch(error => {
+        console.log('Service Worker Registration Failed:', error);
+      });
+    }
+  </script>
 </body>
 </html>

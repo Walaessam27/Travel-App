@@ -1,5 +1,5 @@
 import "./styles/style.scss";
-import { fetchLocationData, fetchWeatherData, fetchImage, displayTripInfo, getCountdown } from "./js/app";
+import { fetchLocationData, fetchWeatherData, fetchImage, displayTripInfo } from "./js/app";
 
 // Select elements
 const form = document.getElementById('location-form');
