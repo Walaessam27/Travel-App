@@ -10,34 +10,31 @@ form.addEventListener('submit', async (event) => {
   const location = locationInput.value;
   const tripDate = dateInput.value;
 
-  // Call APIs to fetch weather and location info (Geonames, Weatherbit, Pixabay)
-  const locationData = await fetchLocationData(location);
-  const weatherData = await fetchWeatherData(locationData.lat, locationData.lng);
-  const imageData = await fetchImage(location);
+  try {
+    const locationData = await fetchLocationData(location);
+    const weatherData = await fetchWeatherData(locationData.lat, locationData.lng);
+    const imageData = await fetchImage(location);
 
-  // Display the data
-  displayTripInfo(locationData, weatherData, imageData, tripDate);
+    displayTripInfo(locationData, weatherData, imageData, tripDate);
+  } catch (error) {
+    tripInfoDiv.innerHTML = `<p>Error fetching data. Please try again.</p>`;
+    console.error('Error:', error);
+  }
 });
 
 async function fetchLocationData(location) {
-  const res = await axios.get(`https://api.geonames.org/search?q=${location}&maxRows=1&username=YOUR_GEONAMES_API_KEY`);
-  const data = res.data.geonames[0];
-  return {
-    lat: data.lat,
-    lng: data.lng,
-    country: data.countryName,
-    name: data.name
-  };
+  const res = await axios.get(`/api/geonames?location=${location}`);
+  return res.data;
 }
 
 async function fetchWeatherData(lat, lng) {
-  const res = await axios.get(`https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lng}&key=YOUR_WEATHERBIT_API_KEY`);
-  return res.data.data[0];
+  const res = await axios.get(`/api/weather?lat=${lat}&lon=${lng}`);
+  return res.data;
 }
 
 async function fetchImage(location) {
-  const res = await axios.get(`https://pixabay.com/api/?key=YOUR_PIXABAY_API_KEY&q=${location}&image_type=photo`);
-  return res.data.hits[0].webformatURL;
+  const res = await axios.get(`/api/pixabay?location=${location}`);
+  return res.data.imageUrl;
 }
 
 function displayTripInfo(locationData, weatherData, imageData, tripDate) {
