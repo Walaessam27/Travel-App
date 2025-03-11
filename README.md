@@ -115,7 +115,7 @@ npm start
 ```
 
 ### 🌍 5. Open in Browser
-Go to http://localhost:3000 to use the app.
+Go to http://localhost:8000 to use the app.
 
 ---
 ## Acknowledgements
