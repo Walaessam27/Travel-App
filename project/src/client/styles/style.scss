@@ -1,7 +1,7 @@
 body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #6e8efb, #a777e3);
-  color: white;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(to right, #4facfe, #00f2fe);
+  color: #fff;
   margin: 0;
   padding: 0;
   display: flex;
@@ -11,31 +11,19 @@ body {
 }
 
 #app {
-  max-width: 600px;
   text-align: center;
-  background: rgba(255, 255, 255, 0.1);
+  width: 90%;
+  max-width: 500px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
 }
 
-header {
-  margin-bottom: 20px;
-}
-
-h1 {
+header h1 {
   font-size: 2rem;
-  margin-bottom: 10px;
-}
-
-p {
-  font-size: 1.2rem;
-  opacity: 0.9;
-}
-
-.form-container {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 form {
@@ -44,33 +32,44 @@ form {
   gap: 10px;
 }
 
-input[type="text"],
-input[type="date"] {
-  padding: 12px;
-  border: none;
-  border-radius: 5px;
+input {
+  padding: 4px;
   font-size: 1rem;
   width: 100%;
+  border: none;
+  border-radius: 5px;
 }
 
 button {
   padding: 12px;
-  background: #4CAF50;
-  color: white;
+  font-size: 1rem;
+  background: #ff8c00;
+  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s;
+  transition: background 0.3s ease-in-out;
 }
 
 button:hover {
-  background: #45a049;
+  background: #ff6f00;
 }
 
-.info-card {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+#trip-info {
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
+
+/* ✅ Mobile Responsive */
+@media (max-width: 600px) {
+  #app {
+    width: 95%;
+    padding: 15px;
+  }
+  header h1 {
+    font-size: 1.5rem;
+  }
+  input, button {
+    font-size: 0.9rem;
+  }
 }
