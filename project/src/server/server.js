@@ -15,6 +15,10 @@ app.use(express.static(path.join(__dirname, '../dist')));
 
 // Serve index.html on root route
 app.get('/', (req, res) => {
+  res.send('Hello, World!');
+});
+
+app.get('/t', (req, res) => {
   res.sendFile(path.join(__dirname, '../dist/index.html'), (err) => {
     if (err) {
       console.error('Error serving index.html:', err);
