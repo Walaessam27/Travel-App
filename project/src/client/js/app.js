@@ -1,9 +1,17 @@
 import axios from 'axios';
+import { jsPDF } from 'jspdf';
 
 const form = document.getElementById('location-form');
 const locationInput = document.getElementById('location');
 const dateInput = document.getElementById('trip-date');
 const tripInfoDiv = document.getElementById('trip-info');
+
+// ✅ Create Print Button
+const printButton = document.createElement('button');
+printButton.textContent = 'Print / Export PDF';
+printButton.style.display = 'none'; // Hide initially
+printButton.addEventListener('click', printTrip);
+tripInfoDiv.appendChild(printButton);
 
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
@@ -22,16 +30,10 @@ form.addEventListener('submit', async (event) => {
   }
 });
 
-// ✅ Export these functions so they can be used in index.js
 export async function fetchLocationData(location) {
   const res = await axios.get(`https://api.geonames.org/searchJSON?q=${location}&maxRows=1&username=YOUR_GEONAMES_API_KEY`);
   const data = res.data.geonames[0];
-  return {
-    lat: data.lat,
-    lng: data.lng,
-    country: data.countryName,
-    name: data.name
-  };
+  return { lat: data.lat, lng: data.lng, country: data.countryName, name: data.name };
 }
 
 export async function fetchWeatherData(lat, lng) {
@@ -52,6 +54,8 @@ export function displayTripInfo(locationData, weatherData, imageData, tripDate) 
     <p>Temperature: ${weatherData.temp}°C</p>
     <p>Countdown: ${getCountdown(tripDate)}</p>
   `;
+
+  printButton.style.display = 'block'; // Show Print button
 }
 
 function getCountdown(tripDate) {
@@ -62,3 +66,11 @@ function getCountdown(tripDate) {
   return daysRemaining > 0 ? `${daysRemaining} days left` : 'The trip is today!';
 }
 
+// ✅ Print & Export to PDF
+function printTrip() {
+  const doc = new jsPDF();
+  doc.text("Trip Details", 10, 10);
+  doc.text(tripInfoDiv.innerText, 10, 20);
+  doc.save("trip-details.pdf");
+  window.print();
+}

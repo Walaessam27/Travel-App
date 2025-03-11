@@ -60,6 +60,30 @@ button:hover {
   font-size: 1.2rem;
 }
 
+button.print-btn {
+  margin-top: 10px;
+  background: #008cba;
+}
+
+button.print-btn:hover {
+  background: #0073a1;
+}
+
+/* ✅ Print Styles */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  #app {
+    box-shadow: none;
+    background: white;
+  }
+  button {
+    display: none;
+  }
+}
+
 /* ✅ Mobile Responsive */
 @media (max-width: 600px) {
   #app {
