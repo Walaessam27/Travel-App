@@ -5,6 +5,7 @@
 - [Core Features](#-core-features)
 - [APIs Used](#-apis-used)
 - [Folder Structure](#-folder-structure)
+- [Prerequisites](#prerequisites)
 - [Getting Started](#-getting-started)
 - [Acknowledgements](#acknowledgements)
 
@@ -66,6 +67,12 @@ Users can enter a **destination** and **trip date**, and the app will fetch:
   ├── README.md          # This file, the project documentation
   
   └── LICENSE            # Project license
+---
+
+## Prerequisites
+- Node.js version 20.17.0 (Recommended)
+- Install Node.js: [Download](https://nodejs.org/)
+- If using NVM, run `nvm use`
 
 
 ---
