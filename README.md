@@ -70,7 +70,7 @@ Users can enter a **destination** and **trip date**, and the app will fetch:
 ---
 
 ## Prerequisites
-- Node.js version 20.17.0 (Recommended)
+- Node.js version v18.20.7 (Recommended)
 - Install Node.js: [Download](https://nodejs.org/)
 - If using NVM, run `nvm use`
 
