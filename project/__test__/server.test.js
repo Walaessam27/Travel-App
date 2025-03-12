@@ -1,6 +1,6 @@
 // server.test.js
 const request = require('supertest');
-const app = require('./src/server/server'); // Assuming your Express app is exported from server.js
+const app = require('./src/server/server'); // Link to your server file
 
 describe('Express Server', () => {
   it('should respond with status 200 on GET /', async () => {
