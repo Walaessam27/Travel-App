@@ -31,19 +31,18 @@ form.addEventListener('submit', async (event) => {
 });
 
 export async function fetchLocationData(location) {
-  const res = await axios.get(`https://api.geonames.org/searchJSON?q=${location}&maxRows=1&username=YOUR_GEONAMES_API_KEY`);
-  const data = res.data.geonames[0];
-  return { lat: data.lat, lng: data.lng, country: data.countryName, name: data.name };
+  const res = await axios.get(`/api/geonames?location=${encodeURIComponent(location)}`);
+  return res.data;
 }
 
 export async function fetchWeatherData(lat, lng) {
-  const res = await axios.get(`https://api.weatherbit.io/v2.0/current?lat=${lat}&lon=${lng}&key=YOUR_WEATHERBIT_API_KEY`);
-  return res.data.data[0];
+  const res = await axios.get(`/api/weather?lat=${lat}&lon=${lng}`);
+  return res.data;
 }
 
 export async function fetchImage(location) {
-  const res = await axios.get(`https://pixabay.com/api/?key=YOUR_PIXABAY_API_KEY&q=${location}&image_type=photo`);
-  return res.data.hits.length > 0 ? res.data.hits[0].webformatURL : '';
+  const res = await axios.get(`/api/pixabay?location=${encodeURIComponent(location)}`);
+  return res.data.imageUrl;
 }
 
 export function displayTripInfo(locationData, weatherData, imageData, tripDate) {
